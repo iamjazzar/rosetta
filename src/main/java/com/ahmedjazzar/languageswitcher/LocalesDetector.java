@@ -14,7 +14,7 @@ import java.util.Locale;
 /**
  * Created by ahmedjazzar on 1/16/16.
  */
-public class LocalesDetector {
+class LocalesDetector {
 
     private LanguageSwitcher languageSwitcher;
     private HashSet<String> appAvailableLocales;
@@ -73,12 +73,12 @@ public class LocalesDetector {
             Resources tempResource2 = new Resources(assetManager, metrics, configuration);
             String target = tempResource2.getString(stringId);
 
-            logger.debug("Checking strings: '" + base + "' and '" + target + "equality.");
+            logger.debug("Checking strings: '" + base + "' and '" + target + "' equality.");
             if (!base.equals(target)) {
                 localesSet.add(locale);
                 logger.info("Locale: '" + locale + "' found");
             } else  {
-                logger.debug("Strings: '" + base + "' and '" + target + "have the same locale.");
+                logger.debug("Strings: '" + base + "' and '" + target + "' have the same locale.");
             }
         }
 
