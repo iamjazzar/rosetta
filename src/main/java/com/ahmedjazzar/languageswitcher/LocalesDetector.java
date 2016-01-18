@@ -14,7 +14,7 @@ import java.util.Locale;
 /**
  * Created by ahmedjazzar on 1/16/16.
  */
-public class LocalesDetector {
+class LocalesDetector {
 
     private LanguageSwitcher languageSwitcher;
     private HashSet<String> appAvailableLocales;
