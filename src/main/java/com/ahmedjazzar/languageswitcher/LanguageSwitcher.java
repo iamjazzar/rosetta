@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentActivity;
 import com.ahmedjazzar.languageswitcher.view.LanguagesListDialogFragment;
 
 import java.util.HashSet;
+import java.util.Locale;
 
 /**
  * Created by ahmedjazzar on 1/16/16.
@@ -25,21 +26,21 @@ public class LanguageSwitcher {
     }
 
     public void show()  {
-        CharSequence[] locales = LocalesUtils.getCharSequenceLocales();
+        CharSequence[] languages = LocalesUtils.getLanguages();
         new LanguagesListDialogFragment()
-                .newInstance(locales)
+                .newInstance(languages)
                 .show(((FragmentActivity) mContext).getSupportFragmentManager(), TAG);
     }
 
-    public HashSet<String> getLocales()   {
+    public HashSet<Locale> getLocales()   {
         return LocalesUtils.getLocales();
     }
 
-    public void setLocales(HashSet<String> locales)    {
+    public void setLocales(HashSet<Locale> locales)    {
         LocalesUtils.setLocales(locales);
     }
 
-    public HashSet<String> fetchLocales(int stringId) {
+    public HashSet<Locale> fetchLocales(int stringId) {
         return LocalesUtils.fetchAppAvailableLocales(stringId);
     }
 }

@@ -1,12 +1,12 @@
 package com.ahmedjazzar.languageswitcher;
 
 import android.content.Context;
-import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.os.Build;
 import android.util.DisplayMetrics;
-import android.view.WindowManager;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Locale;
@@ -16,7 +16,7 @@ import java.util.Locale;
  */
 class LocalesDetector {
 
-    private Context mContext;
+    private final Context mContext;
     private Logger mLogger;
     private final String TAG = LocalesDetector.class.getName();
 
@@ -33,44 +33,66 @@ class LocalesDetector {
      * NOTE: Even if you have a folder named values-ar it doesn't mean you have any resources
      *      there
      *
+     * TODO: consider overloading this to take a base locale argument
+     *
      * @param stringId experimental string id to discover locales
      * @return the discovered locales
      */
-    HashSet<String>  fetchAppAvailableLocales(int stringId) {
+    HashSet<Locale> fetchAppAvailableLocales(int stringId) {
 
-        HashSet<String> localesSet = new HashSet<>();
-        WindowManager windowManager = (WindowManager) mContext.getSystemService(mContext.WINDOW_SERVICE);
-        DisplayMetrics metrics = new DisplayMetrics();
-        windowManager.getDefaultDisplay().getMetrics(metrics);
+        DisplayMetrics dm = mContext.getResources().getDisplayMetrics();
+        Configuration conf = mContext.getResources().getConfiguration();
+        Locale originalLocale = conf.locale;
+        Locale baseLocale = Locale.US;
+        conf.locale = baseLocale;
 
-        Resources res = mContext.getResources();
-        Configuration configuration = res.getConfiguration();
-        AssetManager assetManager = mContext.getAssets();
-        String[] locales = res.getAssets().getLocales();
+        ArrayList<String> references = new ArrayList<>();
+        references.add(new Resources(mContext.getAssets(), dm, conf).getString(stringId));
 
-        // Add default locale to the set
-        localesSet.add(Locale.getDefault().getLanguage());
+        HashSet<Locale> result = new HashSet<>();
+        result.add(baseLocale);
 
-        for(String locale:locales) {
-            mLogger.debug("testing locale availability: " + locale);
+        for(String loc : mContext.getAssets().getLocales()) {
+            if(loc.isEmpty()){
+                continue;
+            }
 
-            configuration.locale = new Locale(locale);
-            Resources tempResource1 = new Resources(assetManager, metrics, configuration);
-            String base = tempResource1.getString(stringId);
+            Locale l;
+            boolean referencesUpdateLock = false;
 
-            configuration.locale = new Locale("");
-            Resources tempResource2 = new Resources(assetManager, metrics, configuration);
-            String target = tempResource2.getString(stringId);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)  {
+                l = Locale.forLanguageTag(loc);
+            } else {
+                l = new Locale(loc.substring(0, 2));
+            }
 
-            mLogger.debug("Checking strings: '" + base + "' and '" + target + "' equality.");
-            if (!base.equals(target)) {
-                localesSet.add(locale);
-                mLogger.info("Locale: '" + locale + "' found");
-            } else  {
-                mLogger.debug("Strings: '" + base + "' and '" + target + "' have the same locale.");
+            conf.locale = l;
+
+            //TODO: put it in a method
+            String tmpString = new Resources(mContext.getAssets(), dm, conf).getString(stringId);
+            for (String reference: references)  {
+                if(reference.equals(tmpString)){
+                    referencesUpdateLock = true;
+                    break;
+                }
+            }
+
+            if(!referencesUpdateLock)   {
+                result.add(l);
+                references.add(tmpString);
             }
         }
-        return validateLocales(localesSet);
+
+        conf.locale = originalLocale; // to restore our guy initial state
+        return result;
+    }
+
+    /**
+     * TODO: return the selected one
+     * @return
+     */
+    Locale getCurrentLocale()   {
+        return mContext.getResources().getConfiguration().locale;
     }
 
     /**
@@ -79,15 +101,21 @@ class LocalesDetector {
      * @param locales to be checked
      * @return valid locales
      */
-    HashSet<String> validateLocales(HashSet<String> locales)   {
+    HashSet<Locale> validateLocales(HashSet<Locale> locales)   {
 
         mLogger.debug("Validating given locales..");
 
-        HashSet<String> cleanLocales = new HashSet<>();
-        String[] androidLocales = mContext.getAssets().getLocales();
-        for (String locale: locales) {
-            if (Arrays.asList(androidLocales).contains(locale.toLowerCase())) {
-                cleanLocales.add(locale.toLowerCase());
+        for (Locale l:LocalesUtils.getPseudoLocales()) {
+            if(locales.remove(l)) {
+                mLogger.info("Pseudo locale '" + l + "' has been removed.");
+            }
+        }
+
+        HashSet<Locale> cleanLocales = new HashSet<>();
+        Locale[] androidLocales = Locale.getAvailableLocales();
+        for (Locale locale: locales) {
+            if (Arrays.asList(androidLocales).contains(locale)) {
+                cleanLocales.add(locale);
             } else {
                 mLogger.error("Invalid passed locale: " + locale);
                 mLogger.warn("Invalid specified locale: '" + locale + "', has been discarded");

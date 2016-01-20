@@ -6,6 +6,9 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 
+import com.ahmedjazzar.languageswitcher.LocalesUtils;
+import com.ahmedjazzar.languageswitcher.Logger;
+
 /**
  * Created by ahmedjazzar on 1/19/16.
  */
@@ -13,16 +16,20 @@ import android.support.v4.app.DialogFragment;
 public class LanguagesListDialogFragment extends DialogFragment {
 
     private final String LOCALES_TAG = "LOCALES";
+    private final String TAG = LanguagesListDialogFragment.class.getName();
+    private Logger mLogger;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         final CharSequence[] languages = getArguments().getCharSequenceArray(LOCALES_TAG);
 
-        builder.setTitle("Wow!")
+        mLogger.debug("Building DialogFragment.");
+
+        builder.setTitle("Language")
                 .setSingleChoiceItems(
                         languages,
-                        0,
+                        LocalesUtils.getCurrentLocaleIndex(),
                         new DialogInterface.OnClickListener() {
 
                             @Override
@@ -30,15 +37,20 @@ public class LanguagesListDialogFragment extends DialogFragment {
 
                             }
                         })
-                .setPositiveButton("APPLY", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                    }
+                .setPositiveButton(
+                        "OK", //TODO: fetch from strings.xml
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                            }
                 })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton(
+                        "Cancel", //TODO: fetch from strings.xml
+                        new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                     }
                 });
 
+        mLogger.verbose("DialogFragment built.");
         return builder.create();
     }
 
@@ -51,5 +63,8 @@ public class LanguagesListDialogFragment extends DialogFragment {
 
         return fragment;
     }
-    public LanguagesListDialogFragment()  {}
+
+    public LanguagesListDialogFragment()  {
+        this.mLogger = new Logger(TAG);
+    }
 }
