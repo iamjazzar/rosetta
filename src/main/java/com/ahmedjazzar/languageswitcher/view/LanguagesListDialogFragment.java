@@ -42,6 +42,7 @@ public class LanguagesListDialogFragment extends DialogFragment {
                                 // TODO: Display Dialog title in the selected locale
                                 // TODO: Display positive button in the selected locale
                                 // TODO: Display negative button in the selected locale
+                                // update the selected locale
                                 mSelectedLanguage = which;
                             }
                         })
@@ -55,7 +56,7 @@ public class LanguagesListDialogFragment extends DialogFragment {
 
                                     if (LocalesUtils.setAppLocale(
                                             getActivity().getBaseContext(), mSelectedLanguage)) {
-                                        
+
                                         mLogger.info("App locale changed successfully.");
                                         refreshApplication();
                                     } else {

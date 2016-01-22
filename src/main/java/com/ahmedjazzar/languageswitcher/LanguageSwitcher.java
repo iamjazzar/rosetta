@@ -1,6 +1,5 @@
 package com.ahmedjazzar.languageswitcher;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.v4.app.FragmentActivity;
 
@@ -23,6 +22,7 @@ public class LanguageSwitcher {
         this.mContext = context;
         this.mLogger = new Logger(TAG);
 
+        LocalesUtils.setLocalesPreferenceManager(new LocalesPreferenceManager(context));
         LocalesUtils.setDetector(new LocalesDetector(this.mContext));
         mLogger.verbose("Object from " + TAG + " has been created.");
     }

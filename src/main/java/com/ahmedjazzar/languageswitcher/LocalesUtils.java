@@ -19,8 +19,8 @@ import java.util.Locale;
  */
 public final class LocalesUtils {
 
-    @NonNull
     private static LocalesDetector sDetector;
+    private static LocalesPreferenceManager sLocalesPreferenceManager;
     private static HashSet<Locale> sLocales;
     private static final Locale[] PSEUDO_LOCALES = {
             new Locale("en", "XA"),
@@ -33,8 +33,14 @@ public final class LocalesUtils {
      *
      * @param detector just a setter because I don't want to declare any constructors in this class
      */
-    public static void setDetector(LocalesDetector detector) {
+    public static void setDetector(@NonNull LocalesDetector detector) {
         LocalesUtils.sDetector = detector;
+    }
+
+    public static void setLocalesPreferenceManager(
+            @NonNull LocalesPreferenceManager localesPreferenceManager)   {
+
+        LocalesUtils.sLocalesPreferenceManager = localesPreferenceManager;
     }
 
     /**
@@ -139,10 +145,21 @@ public final class LocalesUtils {
             return false;
         }
 
-        // TODO: Update preferences
+        if (LocalesUtils.updateLocalePreferences(newLocale))    {
+            sLogger.info("Locale preferences updated to: " +
+                    LocalesUtils.sLocalesPreferenceManager.getPreferredLocale());
+        } else  {
+            sLogger.error("Faild to update locale preferences.");
+        }
+
         return true;
     }
 
+    private static boolean updateLocalePreferences(Locale locale)    {
+
+        return LocalesUtils.sLocalesPreferenceManager
+                .setPreferredLocale(locale.getLanguage(), locale.getCountry());
+    }
     private static Locale getCurrentLocale() {
         return sDetector.getCurrentLocale();
     }
