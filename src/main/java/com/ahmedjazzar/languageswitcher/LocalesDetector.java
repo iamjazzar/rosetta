@@ -72,6 +72,7 @@ class LocalesDetector {
             String tmpString = new Resources(mContext.getAssets(), dm, conf).getString(stringId);
             for (String reference: references)  {
                 if(reference.equals(tmpString)){
+                    // TODO: check its original locale
                     referencesUpdateLock = true;
                     break;
                 }
@@ -93,6 +94,35 @@ class LocalesDetector {
      */
     Locale getCurrentLocale()   {
         return mContext.getResources().getConfiguration().locale;
+    }
+
+    /**
+     * TODO: what if a user didn't provide a closer email at all?
+     * TODO: check the closest locale not the first identified
+     *
+     * This method should provide a locale that is close to the given one in the parameter, it's
+     * currently checking the language only if in case the detector detects the string in other
+     * language.
+     *
+     * @param locale mostly the locale that's not detected or provided
+     * @return the index of the most close locale to the given locale. -1 if not detected
+     */
+    int detectMostClosestLocale(Locale locale)   {
+
+        mLogger.debug("Start detecting a close locale to: ");
+
+        int index = 0;
+        for (Locale loc: LocalesUtils.getLocales()) {
+            if(loc.getDisplayLanguage().equals(locale.getDisplayLanguage()))    {
+                mLogger.info("The locale: '" + loc + "' has been detected as a closer locale to: '"
+                        + locale + "'");
+                return index;
+            }
+            index++;
+        }
+
+        mLogger.debug("No closer locales founded.");
+        return -1;
     }
 
     /**

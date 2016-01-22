@@ -1,10 +1,12 @@
 package com.ahmedjazzar.languageswitcher;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v4.app.FragmentActivity;
 
 import com.ahmedjazzar.languageswitcher.view.LanguagesListDialogFragment;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Locale;
 
@@ -26,7 +28,7 @@ public class LanguageSwitcher {
     }
 
     public void show()  {
-        CharSequence[] languages = LocalesUtils.getLanguages();
+        ArrayList<String> languages = LocalesUtils.getLocalesWithDisplayName();
         new LanguagesListDialogFragment()
                 .newInstance(languages)
                 .show(((FragmentActivity) mContext).getSupportFragmentManager(), TAG);
