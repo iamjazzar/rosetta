@@ -1,12 +1,12 @@
 package com.ahmedjazzar.languageswitcher;
 
 import android.content.Context;
-import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.os.Build;
 import android.util.DisplayMetrics;
-import android.view.WindowManager;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Locale;
@@ -16,24 +16,15 @@ import java.util.Locale;
  */
 class LocalesDetector {
 
-    private LanguageSwitcher languageSwitcher;
-    private HashSet<String> appAvailableLocales;
-    private Logger logger;
+    private final Context mContext;
+    private Logger mLogger;
     private final String TAG = LocalesDetector.class.getName();
 
-    public LocalesDetector(LanguageSwitcher ls)    {
-        logger = new Logger(TAG);
-        languageSwitcher = ls;
-        appAvailableLocales = new HashSet<>();
-        logger.verbose("Object from " + TAG + "Created");
-    }
+    public LocalesDetector(Context context)    {
+        this.mLogger = new Logger(TAG);
+        this.mContext = context;
 
-    /**
-     *
-     * @param locales user pre-defined locales that wanna use without fetching the locales
-     */
-    public void setAppAvailableLocales(HashSet locales) {
-        appAvailableLocales = validateLocales(locales);
+        mLogger.verbose("Object from " + TAG + "Created");
     }
 
     /**
@@ -42,83 +33,125 @@ class LocalesDetector {
      * NOTE: Even if you have a folder named values-ar it doesn't mean you have any resources
      *      there
      *
+     * TODO: consider overloading this to take a base locale argument
+     *
      * @param stringId experimental string id to discover locales
-     * @param saveResults if true will going to update the locales set with the discovered one
      * @return the discovered locales
      */
-    HashSet<String>  fetchAppAvailableLocales(int stringId, boolean saveResults) {
+    HashSet<Locale> fetchAppAvailableLocales(int stringId) {
 
-        HashSet<String> localesSet = new HashSet<>();
-        Context context = languageSwitcher.getContext();
-        WindowManager windowManager = (WindowManager) context.getSystemService(context.WINDOW_SERVICE);
-        DisplayMetrics metrics = new DisplayMetrics();
-        windowManager.getDefaultDisplay().getMetrics(metrics);
+        DisplayMetrics dm = mContext.getResources().getDisplayMetrics();
+        Configuration conf = mContext.getResources().getConfiguration();
+        Locale originalLocale = conf.locale;
+        Locale baseLocale = Locale.US;
+        conf.locale = baseLocale;
 
-        Resources res = context.getResources();
-        Configuration configuration = res.getConfiguration();
-        AssetManager assetManager = context.getAssets();
-        String[] locales = res.getAssets().getLocales();
+        ArrayList<String> references = new ArrayList<>();
+        references.add(new Resources(mContext.getAssets(), dm, conf).getString(stringId));
 
-        // Add default locale to the set
-        localesSet.add(Locale.getDefault().getLanguage());
+        HashSet<Locale> result = new HashSet<>();
+        result.add(baseLocale);
 
-        for(String locale:locales) {
-            logger.debug("testing locale availability: " + locale);
+        for(String loc : mContext.getAssets().getLocales()) {
+            if(loc.isEmpty()){
+                continue;
+            }
 
-            configuration.locale = new Locale(locale);
-            Resources tempResource1 = new Resources(assetManager, metrics, configuration);
-            String base = tempResource1.getString(stringId);
+            Locale l;
+            boolean referencesUpdateLock = false;
 
-            configuration.locale = new Locale("");
-            Resources tempResource2 = new Resources(assetManager, metrics, configuration);
-            String target = tempResource2.getString(stringId);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)  {
+                l = Locale.forLanguageTag(loc);
+            } else {
+                l = new Locale(loc.substring(0, 2));
+            }
 
-            logger.debug("Checking strings: '" + base + "' and '" + target + "' equality.");
-            if (!base.equals(target)) {
-                localesSet.add(locale);
-                logger.info("Locale: '" + locale + "' found");
-            } else  {
-                logger.debug("Strings: '" + base + "' and '" + target + "' have the same locale.");
+            conf.locale = l;
+
+            //TODO: put it in a method
+            String tmpString = new Resources(mContext.getAssets(), dm, conf).getString(stringId);
+            for (String reference: references)  {
+                if(reference.equals(tmpString)){
+                    // TODO: check its original locale
+                    referencesUpdateLock = true;
+                    break;
+                }
+            }
+
+            if(!referencesUpdateLock)   {
+                result.add(l);
+                references.add(tmpString);
             }
         }
 
-        if (saveResults)    {
-            appAvailableLocales = localesSet;
-        }
-
-        return localesSet;
+        conf.locale = originalLocale; // to restore our guy initial state
+        return result;
     }
 
     /**
-     *
-     * @return the available locales discovered in the application
+     * TODO: return the selected one
+     * @return
      */
-    public HashSet<String> getAppAvailableLocales() {
-        return appAvailableLocales;
+    Locale getCurrentLocale()   {
+        return mContext.getResources().getConfiguration().locale;
+    }
+
+    /**
+     * TODO: what if a user didn't provide a closer email at all?
+     * TODO: check the closest locale not the first identified
+     *
+     * This method should provide a locale that is close to the given one in the parameter, it's
+     * currently checking the language only if in case the detector detects the string in other
+     * language.
+     *
+     * @param locale mostly the locale that's not detected or provided
+     * @return the index of the most close locale to the given locale. -1 if not detected
+     */
+    int detectMostClosestLocale(Locale locale)   {
+
+        mLogger.debug("Start detecting a close locale to: ");
+
+        int index = 0;
+        for (Locale loc: LocalesUtils.getLocales()) {
+            if(loc.getDisplayLanguage().equals(locale.getDisplayLanguage()))    {
+                mLogger.info("The locale: '" + loc + "' has been detected as a closer locale to: '"
+                        + locale + "'");
+                return index;
+            }
+            index++;
+        }
+
+        mLogger.debug("No closer locales founded.");
+        return -1;
     }
 
     /**
      * This method validate locales by checking if they are available of they contain wrong letter
      * case and adding the valid ones in a clean set.
-     *
      * @param locales to be checked
      * @return valid locales
      */
-    public HashSet<String> validateLocales(HashSet<String> locales)   {
+    HashSet<Locale> validateLocales(HashSet<Locale> locales)   {
 
-        logger.debug("Validating given locales..");
+        mLogger.debug("Validating given locales..");
 
-        HashSet<String> cleanLocales = new HashSet<>();
-        String[] androidLocales = languageSwitcher.getContext().getAssets().getLocales();
-        for (String locale: locales) {
-            if (Arrays.asList(androidLocales).contains(locale.toLowerCase())) {
-                cleanLocales.add(locale.toLowerCase());
-            } else {
-                logger.error("Invalid passed locale: " + locale);
-                logger.warn("Invalid specified locale: '" + locale + "', has been discarded");
+        for (Locale l:LocalesUtils.getPseudoLocales()) {
+            if(locales.remove(l)) {
+                mLogger.info("Pseudo locale '" + l + "' has been removed.");
             }
         }
-        logger.debug("passing validated locales.");
+
+        HashSet<Locale> cleanLocales = new HashSet<>();
+        Locale[] androidLocales = Locale.getAvailableLocales();
+        for (Locale locale: locales) {
+            if (Arrays.asList(androidLocales).contains(locale)) {
+                cleanLocales.add(locale);
+            } else {
+                mLogger.error("Invalid passed locale: " + locale);
+                mLogger.warn("Invalid specified locale: '" + locale + "', has been discarded");
+            }
+        }
+        mLogger.debug("passing validated locales.");
         return cleanLocales;
     }
 }

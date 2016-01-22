@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="language_switcher_dialog_title">اللغة</string>
+    <string name="language_switcher_positive_button">موافق</string>
+    <string name="language_switcher_negative_button">إلغاء</string>
+</resources>
