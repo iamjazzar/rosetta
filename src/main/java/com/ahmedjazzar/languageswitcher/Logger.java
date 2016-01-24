@@ -3,38 +3,36 @@ package com.ahmedjazzar.languageswitcher;
 import android.util.Log;
 
 /**
+ * This class helps logging app events without a need to rewrite the tag name in every time
  * Created by ahmedjazzar on 1/16/16.
  */
 
-public class Logger {
+class Logger {
 
     private String mTag;
 
-    public Logger(Class<?> cls) {
-        this.mTag = cls.getName();
+    Logger(String tag) {
+        this.mTag = tag;
+        this.verbose("Object from " + this.mTag + " has been created.");
     }
 
-    public Logger(String mTag) {
-        this.mTag = mTag;
-    }
-
-    public void error(String log) {
+    void error(String log) {
         Log.e(this.mTag, log);
     }
 
-    public void warn(String log) {
+    void warn(String log) {
         Log.w(this.mTag, log);
     }
 
-    public void debug(String log) {
+    void debug(String log) {
         Log.d(this.mTag, log);
     }
 
-    public void info(String log) {
+    void info(String log) {
         Log.i(this.mTag, log);
     }
 
-    public void verbose(String log) {
+    void verbose(String log) {
         Log.v(this.mTag, log);
     }
 }

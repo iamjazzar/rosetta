@@ -12,6 +12,10 @@ import java.util.HashSet;
 import java.util.Locale;
 
 /**
+ * This class detects the application available locales inside the resources based on a string id,
+ * it's not so accurate and expects another methodologies. Next release may hold a better algorithms
+ * for detecting strings' languages and availability inside apps.
+ *
  * Created by ahmedjazzar on 1/16/16.
  */
 class LocalesDetector {
@@ -20,11 +24,9 @@ class LocalesDetector {
     private Logger mLogger;
     private final String TAG = LocalesDetector.class.getName();
 
-    public LocalesDetector(Context context)    {
-        this.mLogger = new Logger(TAG);
+    LocalesDetector(Context context)    {
         this.mContext = context;
-
-        mLogger.verbose("Object from " + TAG + "Created");
+        this.mLogger = new Logger(TAG);
     }
 
     /**
@@ -33,17 +35,15 @@ class LocalesDetector {
      * NOTE: Even if you have a folder named values-ar it doesn't mean you have any resources
      *      there
      *
-     * TODO: consider overloading this to take a base locale argument
-     *
      * @param stringId experimental string id to discover locales
      * @return the discovered locales
      */
-    HashSet<Locale> fetchAppAvailableLocales(int stringId) {
+    HashSet<Locale> fetchAvailableLocales(int stringId) {
 
         DisplayMetrics dm = mContext.getResources().getDisplayMetrics();
         Configuration conf = mContext.getResources().getConfiguration();
         Locale originalLocale = conf.locale;
-        Locale baseLocale = Locale.US;
+        Locale baseLocale = LocalesUtils.getBaseLocale();
         conf.locale = baseLocale;
 
         ArrayList<String> references = new ArrayList<>();
@@ -89,8 +89,8 @@ class LocalesDetector {
     }
 
     /**
-     * TODO: return the selected one
-     * @return
+     * TODO: return the selected one instead
+     * @return application current locale
      */
     Locale getCurrentLocale()   {
         return mContext.getResources().getConfiguration().locale;
