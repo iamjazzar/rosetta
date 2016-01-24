@@ -1,6 +1,5 @@
 package com.ahmedjazzar.languageswitcher;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -8,42 +7,85 @@ import android.preference.PreferenceManager;
 import java.util.Locale;
 
 /**
- * Created by ahmedjazzar on /22/116.
+ * This class is responsible for setting and getting the preferred locale and manage any related
+ * actions. I think that there's no need for logging here because the utils class already handles
+ * logs for these actions based on their returned results.
+ *
+ * Created by ahmedjazzar on 1/22/16.
  */
-public class LocalesPreferenceManager  {
+class LocalesPreferenceManager  {
 
     private SharedPreferences mSharedPreferences;
     private SharedPreferences.Editor mEditor;
-    private final Locale DEFAULT_LOCALE;
+    private final Locale BASE_LOCALE;
     private final String PREFERRED_LANGUAGE_KEY = "preferred_language";
     private final String PREFERRED_COUNTRY_KEY = "preferred_country";
 
-    public LocalesPreferenceManager(Context context)   {
-        this(context, Locale.US);
-    }
+    LocalesPreferenceManager(Context context, Locale firstLaunchLocale, Locale baseLocale)   {
 
-    public LocalesPreferenceManager(Context context, Locale defaultLocale)   {
         this.mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         this.mEditor = this.mSharedPreferences.edit();
-        this.DEFAULT_LOCALE = defaultLocale;
+        this.BASE_LOCALE = baseLocale;
+
+        // these lines detect for a previous preferred locale and prevent overriding it
+        if (getPreferredLocale() == null)    {
+            this.setPreferredLocale(firstLaunchLocale);
+        }
     }
 
-    public boolean setPreferredLocale(String language, String country)   {
+    /**
+     * Sets user preferred locale
+     *
+     * @param locale user desired locale
+     * @return true if the preference updated
+     */
+    boolean setPreferredLocale(Locale locale)   {
+        return this.setPreferredLocale(locale.getLanguage(), locale.getCountry());
+    }
+
+    /**
+     *
+     * @return preferred locale after concatenating language and country
+     */
+    Locale getPreferredLocale()    {
+        return new Locale(getPreferredLanguage(), getPreferredCountry());
+    }
+
+    /**
+     *
+     * @return base locale. (The one that used in main xml string file)
+     */
+    Locale getBaseLocale()   {
+        return this.BASE_LOCALE;
+    }
+
+    /**
+     * Sets user preferred locale by setting a language preference and a country preference since
+     * there's no supported preferences for locales
+     * @param language of the locale; ex. en
+     * @param country of the locale; ex. US
+     * @return true if the preferences updated
+     */
+    private boolean setPreferredLocale(String language, String country)   {
         mEditor.putString(this.PREFERRED_LANGUAGE_KEY, language);
         mEditor.putString(this.PREFERRED_COUNTRY_KEY, country);
 
         return mEditor.commit();
     }
 
-    public Locale getPreferredLocale()    {
-        return new Locale(getPreferredLanguage(), getPreferredCountry());
-    }
-
+    /**
+     *
+     * @return preferred language
+     */
     private String getPreferredLanguage()  {
-        return mSharedPreferences.getString(PREFERRED_LANGUAGE_KEY, DEFAULT_LOCALE.getLanguage());
+        return mSharedPreferences.getString(PREFERRED_LANGUAGE_KEY, BASE_LOCALE.getLanguage());
     }
 
+    /**
+     *
+     * @return preferred country
+     */
     private String getPreferredCountry()  {
-        return mSharedPreferences.getString(PREFERRED_COUNTRY_KEY, DEFAULT_LOCALE.getCountry());
+        return mSharedPreferences.getString(PREFERRED_COUNTRY_KEY, BASE_LOCALE.getCountry());
     }
 }
