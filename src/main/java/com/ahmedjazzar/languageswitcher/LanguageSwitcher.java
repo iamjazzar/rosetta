@@ -32,7 +32,11 @@ public class LanguageSwitcher {
 
     /**
      * A constructor that accepts context and sets the base and first launch locales to
-     * firstLaunchLocale
+     * firstLaunchLocale.
+     *
+     * NOTE: Please do not use unless:
+     *  1. You wanna set your locales by calling {@link LanguageSwitcher#setSupportedLocales}
+     *  2. You know for sure that the preferred locale is as same as your base locale
      *
      * @param context the context of the dealer
      * @param firstLaunchLocale the locale that owner wanna use at its first launch

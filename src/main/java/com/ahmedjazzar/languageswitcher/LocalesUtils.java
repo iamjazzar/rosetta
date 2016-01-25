@@ -3,6 +3,7 @@ package com.ahmedjazzar.languageswitcher;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
 
@@ -159,6 +160,11 @@ final class LocalesUtils {
 
         Locale oldLocale = new Locale(configuration.locale.getLanguage(), configuration.locale.getCountry());
         configuration.locale = newLocale;
+        // Sets the layout direction from the Locale
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            sLogger.debug("Setting the layout direction");
+            configuration.setLayoutDirection(newLocale);
+        }
         resources.updateConfiguration(configuration, displayMetrics);
 
         if(oldLocale.equals(newLocale)) {
