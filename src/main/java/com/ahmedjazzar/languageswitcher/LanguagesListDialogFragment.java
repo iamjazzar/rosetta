@@ -1,14 +1,17 @@
 package com.ahmedjazzar.languageswitcher;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.NavUtils;
+import android.support.v4.app.FragmentActivity;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * This fragment is responsible for displaying the supported locales and performing any necessary
@@ -21,6 +24,10 @@ public class LanguagesListDialogFragment extends DialogFragment {
 
     private final String LANGUAGES_TAG = "LANGUAGES";
     private final String TAG = LanguagesListDialogFragment.class.getName();
+    private final int DIALOG_TITLE_ID = R.string.language_switcher_dialog_title;
+    private final int DIALOG_POSITIVE_ID = R.string.language_switcher_positive_button;
+    private final int DIALOG_NEGATIVE_ID = R.string.language_switcher_negative_button;
+
     private int mSelectedLanguage = -1;
     private Logger mLogger;
 
@@ -40,24 +47,42 @@ public class LanguagesListDialogFragment extends DialogFragment {
 
         mLogger.debug("Building DialogFragment.");
 
-        builder.setTitle(getString(R.string.language_switcher_dialog_title))
+        builder.setTitle(getString(DIALOG_TITLE_ID))
                 .setSingleChoiceItems(
                         languages.toArray(new String[languages.size()]),
                         LocalesUtils.getCurrentLocaleIndex(),
                         new DialogInterface.OnClickListener() {
                             @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // TODO: Display Dialog title in the selected locale
-                                // TODO: Display positive button in the selected locale
-                                // TODO: Display negative button in the selected locale
+                            public void onClick(DialogInterface dialogInterface, int which) {
+
                                 // update the selected locale
                                 mSelectedLanguage = which;
+                                Locale locale = LocalesUtils.getLocaleFromIndex(mSelectedLanguage);
+                                AlertDialog dialog = (AlertDialog) getDialog();
+                                FragmentActivity activity = getActivity();
+
+                                mLogger.debug("Displaying dialog main strings in the selected " +
+                                        "locale");
+
+                                // Display dialog title in the selected locale
+                                dialog.setTitle(LocalesUtils.getInSpecificLocale(
+                                        activity, locale, DIALOG_TITLE_ID));
+
+                                // Display positive button text in the selected locale
+                                dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                                        .setText(LocalesUtils.getInSpecificLocale(
+                                                activity, locale, DIALOG_POSITIVE_ID));
+
+                                // Display negative button text in the selected locale
+                                dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+                                        .setText(LocalesUtils.getInSpecificLocale(
+                                                activity, locale, DIALOG_NEGATIVE_ID));
                             }
                         })
                 .setPositiveButton(
-                        getString(R.string.language_switcher_positive_button).toUpperCase(),
+                        getString(DIALOG_POSITIVE_ID).toUpperCase(),
                         new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
+                            public void onClick(DialogInterface dialogInterface, int which) {
 
                                 // if the user did not select the same locale go ahead, else ignore
                                 if (mSelectedLanguage != -1 &&
@@ -74,14 +99,14 @@ public class LanguagesListDialogFragment extends DialogFragment {
                                         // TODO: notify the user that his request not placed
                                     }
                                 } else  {
-                                    dialog.dismiss();
+                                    dialogInterface.dismiss();
                                 }
                             }
                         })
                 .setNegativeButton(
-                        getString(R.string.language_switcher_negative_button).toUpperCase(),
+                        getString(DIALOG_NEGATIVE_ID).toUpperCase(),
                         new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
+                            public void onClick(DialogInterface dialogInterface, int which) {
                                 mLogger.verbose("User discarded changing language.");
                             }
                         });
