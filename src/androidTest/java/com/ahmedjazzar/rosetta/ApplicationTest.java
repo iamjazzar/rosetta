@@ -1,4 +1,4 @@
-package com.ahmedjazzar.languageswitcher;
+package com.ahmedjazzar.rosetta;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

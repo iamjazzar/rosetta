@@ -1,4 +1,4 @@
-package com.ahmedjazzar.languageswitcher;
+package com.ahmedjazzar.rosetta;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
