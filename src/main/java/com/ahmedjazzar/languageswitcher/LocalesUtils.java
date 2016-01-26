@@ -3,7 +3,9 @@ package com.ahmedjazzar.languageswitcher;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentActivity;
 import android.util.DisplayMetrics;
 
 import java.util.ArrayList;
@@ -136,14 +138,21 @@ final class LocalesUtils {
 
     /**
      *
+     * @param index
+     * @return the locale at the given index
+     */
+    static Locale getLocaleFromIndex(int index)  {
+        return LocalesUtils.sLocales.toArray(new Locale[LocalesUtils.sLocales.size()])[index];
+    }
+
+    /**
+     *
      * @param context
      * @param index the selected locale position
      * @return true if the application locale changed
      */
     static boolean setAppLocale(Context context, int index)    {
-
-        Locale newLocale = LocalesUtils.sLocales.toArray(new Locale[LocalesUtils.sLocales.size()])[index];
-        return setAppLocale(context, newLocale);
+        return setAppLocale(context, getLocaleFromIndex(index));
     }
 
     /**
@@ -159,6 +168,11 @@ final class LocalesUtils {
 
         Locale oldLocale = new Locale(configuration.locale.getLanguage(), configuration.locale.getCountry());
         configuration.locale = newLocale;
+        // Sets the layout direction from the Locale
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            sLogger.debug("Setting the layout direction");
+            configuration.setLayoutDirection(newLocale);
+        }
         resources.updateConfiguration(configuration, displayMetrics);
 
         if(oldLocale.equals(newLocale)) {
@@ -181,6 +195,27 @@ final class LocalesUtils {
      */
     static Locale getBaseLocale()    {
         return LocalesUtils.sLocalesPreferenceManager.getBaseLocale();
+    }
+
+    /**
+     *
+     * @param activity
+     * @param locale
+     * @param stringId the target string
+     * @return a localized string
+     */
+    static String getInSpecificLocale(FragmentActivity activity, Locale locale, int stringId) {
+
+        Configuration conf = activity.getResources().getConfiguration();
+        Locale old = conf.locale;
+
+        conf.locale = locale;
+        DisplayMetrics metrics = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        Resources resources = new Resources(activity.getAssets(), metrics, conf);
+        conf.locale = old;
+
+        return  resources.getString(stringId);
     }
 
     /**
