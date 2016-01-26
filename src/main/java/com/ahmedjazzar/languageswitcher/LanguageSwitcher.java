@@ -67,9 +67,7 @@ public class LanguageSwitcher {
      * Responsible for displaying Change dialog fragment
      */
     public void showChangeLanguageDialog()  {
-        ArrayList<String> languages = LocalesUtils.getLocalesWithDisplayName();
         new LanguagesListDialogFragment()
-                .newInstance(languages)
                 .show(((FragmentActivity) mContext).getSupportFragmentManager(), TAG);
     }
 
