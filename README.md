@@ -1,13 +1,15 @@
 # Rosetta
 Rosetta is an Android library that helps your app to support multiple languages and switching between them without causing any headaches for you as a developer.
 
+![First screenshot](https://s3.amazonaws.com/ahmedjazzar-personalsite/libraries/all.png)
+
 ## How to use
 
 #### 1. Add these lines to your *build.gradle*
 
 ```JAVA
 repositories {
-    maven { url "https://dl.bintray.com/ahmedaljazzar/maven/" }
+    mavenCentral()
 }
 
 dependencies {
