@@ -155,7 +155,7 @@ Yes! You did it. Your application supports now every locale supported by android
 		1. `getLanguages()` to get a display-ready languages.
 		2. `getCurrentLocaleIndex()` to get the index of the locale that your app is displaying right now.
 
-## What is Rosetta?*
+## What is Rosetta?
 
 The Rosetta Stone is a granodiorite stele inscribed with a decree issued at Memphis, Egypt, in 196 BC on behalf of King Ptolemy V. The decree appears in three scripts: the upper text is Ancient Egyptian hieroglyphs, the middle portion Demotic script, and the lowest Ancient Greek. Because it presents essentially the same text in all three scripts (with some minor differences among them), the stone provided the key to the modern understanding of Egyptian hieroglyphs.
 * Continue reading [here](https://en.wikipedia.org/wiki/Rosetta_Stone)
