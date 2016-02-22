@@ -1,4 +1,5 @@
-# Rosetta
+# Rosetta [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.ahmedjazzar.rosetta/rosetta/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.ahmedjazzar.rosetta/rosetta/badge.svg)
+
 Rosetta is an Android library that helps your app to support multiple languages and switching between them without causing any headaches for you as a developer.
 
 ![First screenshot](https://s3-us-west-2.amazonaws.com/ahmedjazzar-ahmedjazzarcom/libs/rosetta-v0.9.png)
