@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">rosetta</string>
+    <string name="action_switch">switch language</string>
+    <string name="message">Hello localized world!</string>
+</resources>
