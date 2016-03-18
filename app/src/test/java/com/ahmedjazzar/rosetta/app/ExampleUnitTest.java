@@ -1,4 +1,4 @@
-package com.ahmedjazzar.rosetta;
+package com.ahmedjazzar.rosetta.app;
 
 import org.junit.Test;
 
