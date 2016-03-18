@@ -1,5 +1,6 @@
 package com.ahmedjazzar.rosetta;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
@@ -118,5 +119,37 @@ public class LanguageSwitcher {
      */
     public HashSet<Locale> fetchAvailableLocales(int stringId) {
         return LocalesUtils.fetchAvailableLocales(stringId);
+    }
+
+    /**
+     * Setting the application locale manually
+     * @param newLocale the locale in a string format
+     * @param activity the current activity in order to refresh the app
+     *
+     * @return true if the operation succeed else otherwise
+     */
+    public boolean setLocale(String newLocale, Activity activity)   {
+        return setLocale(new Locale(newLocale), activity);
+    }
+
+    /**
+     * Setting the application locale manually
+     * @param newLocale the desired locale
+     * @param activity the current activity in order to refresh the app
+     *
+     * @return true if the operation succeed else otherwise
+     */
+    public boolean setLocale(Locale newLocale, Activity activity)  {
+
+        if (newLocale == null || !getLocales().contains(newLocale))  {
+            return false;
+        }
+
+        if (LocalesUtils.setAppLocale(mContext, newLocale))   {
+            LocalesUtils.refreshApplication(activity);
+            return true;
+        }
+
+        return false;
     }
 }

@@ -1,6 +1,8 @@
 package com.ahmedjazzar.rosetta;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
@@ -216,6 +218,29 @@ final class LocalesUtils {
         conf.locale = old;
 
         return  resources.getString(stringId);
+    }
+
+    /**
+     * Refreshing the application so no weired results occurred after changing the locale.
+     */
+    static void refreshApplication(Activity activity) {
+
+        Intent app = activity.getBaseContext().getPackageManager()
+                .getLaunchIntentForPackage(activity.getBaseContext().getPackageName());
+        app.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+        Intent current = new Intent(activity, activity.getClass());
+        sLogger.debug("Refreshing the application: " +
+                activity.getBaseContext().getPackageName());
+
+        sLogger.debug("Finishing current activity.");
+        activity.finish();
+
+        sLogger.debug("Start the application");
+        activity.startActivity(app);
+        activity.startActivity(current);
+
+        sLogger.debug("Application refreshed");
     }
 
     /**
