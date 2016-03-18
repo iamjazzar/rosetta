@@ -3,4 +3,5 @@
     <string name="app_name">rosetta</string>
     <string name="action_switch">حول اللغة</string>
     <string name="message">مرحبًا آيها العالم المترجم!</string>
+    <string name="language_changed">اللغة أصبحت</string>
 </resources>

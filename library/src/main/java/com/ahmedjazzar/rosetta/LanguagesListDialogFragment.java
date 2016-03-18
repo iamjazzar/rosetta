@@ -152,7 +152,7 @@ public class LanguagesListDialogFragment extends DialogFragment {
                     getActivity(), mSelectedLanguage)) {
 
                 mLogger.info("App locale changed successfully.");
-                refreshApplication();
+                LocalesUtils.refreshApplication(getActivity());
             } else {
                 mLogger.error("Unsuccessful trial to change the App locale.");
                 // TODO: notify the user that his request not placed
@@ -186,26 +186,4 @@ public class LanguagesListDialogFragment extends DialogFragment {
         return LocalesUtils.getCurrentLocaleIndex();
     }
 
-    /**
-     * Refreshing the application so no weired results occurred after changing the locale.
-     */
-    private void refreshApplication() {
-
-        Intent app = getActivity().getBaseContext().getPackageManager()
-                .getLaunchIntentForPackage(getActivity().getBaseContext().getPackageName());
-        app.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
-        Intent current = new Intent(getActivity(), getActivity().getClass());
-        mLogger.debug("Refreshing the application: " +
-                getActivity().getBaseContext().getPackageName());
-
-        mLogger.debug("Finishing current activity.");
-        getActivity().finish();
-
-        mLogger.debug("Start the application");
-        startActivity(app);
-        startActivity(current);
-
-        mLogger.debug("Application refreshed");
-    }
 }
