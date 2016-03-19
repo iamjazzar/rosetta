@@ -7,6 +7,7 @@ Rosetta is an Android library that helps your app to support multiple languages 
 ## How to use
 
 #### 1. Add these lines to your *build.gradle*
+You can use *mavenCentral* or *jcenter*
 
 ```JAVA
 repositories {
@@ -14,7 +15,7 @@ repositories {
 }
 
 dependencies {
-  compile "com.ahmedjazzar.rosetta:rosetta:0.9.0"
+  compile "com.ahmedjazzar.rosetta:rosetta:0.9.1"
 }
 ```
 
@@ -38,6 +39,7 @@ supportedLocales.add(Locale.US);
 supportedLocales.add(Locale.CHINA);
 supportedLocales.add(new Locale("ar"));
 
+// You can make the following variable static to use the same object in all app's classes
 LanguageSwitcher ls = new LanguageSwitcher(this, firstLaunchLocale);
 ls.setSupportedLocales(supportedLocales);
 
@@ -110,7 +112,9 @@ LinearLayout languageView = (LinearLayout) layout.findViewById(R.id.language_lay
 languageView.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View v) {
-        new LanguageSwitcher(getActivity()).showChangeLanguageDialog();
+    	// If you declared a static object; you can use the following line:
+    	// MainApplication.languageSwitcher.switchToLaunch(SettingsActivity.this);
+        new LanguageSwitcher(getActivity()).showChangeLanguageDialog(SettingsActivity.this);
     }
 });
 
@@ -158,7 +162,7 @@ Yes! You did it. Your application supports now every locale supported by android
 
 ## What is Rosetta?
 
-The Rosetta Stone is a granodiorite stele inscribed with a decree issued at Memphis, Egypt, in 196 BC on behalf of King Ptolemy V. The decree appears in three scripts: the upper text is Ancient Egyptian hieroglyphs, the middle portion Demotic script, and the lowest Ancient Greek. Because it presents essentially the same text in all three scripts (with some minor differences among them), the stone provided the key to the modern understanding of Egyptian hieroglyphs.
+Rosetta is the first name of *Rosetta Stone*. The Rosetta Stone is a granodiorite stele inscribed with a decree issued at Memphis, Egypt, in 196 BC on behalf of King Ptolemy V. The decree appears in three scripts: the upper text is Ancient Egyptian hieroglyphs, the middle portion Demotic script, and the lowest Ancient Greek. Because it presents essentially the same text in all three scripts (with some minor differences among them), the stone provided the key to the modern understanding of Egyptian hieroglyphs.
 * Continue reading [here](https://en.wikipedia.org/wiki/Rosetta_Stone)
 
 ## License
