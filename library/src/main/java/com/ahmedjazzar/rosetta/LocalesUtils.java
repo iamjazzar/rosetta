@@ -182,8 +182,8 @@ final class LocalesUtils {
         }
 
         if (LocalesUtils.updatePreferredLocale(newLocale))    {
-            sLogger.info("Locale preferences updated to: " +
-                    LocalesUtils.sLocalesPreferenceManager.getPreferredLocale());
+            sLogger.info("Locale preferences updated to: " + newLocale);
+            Locale.setDefault(newLocale);
         } else  {
             sLogger.error("Failed to update locale preferences.");
         }
@@ -196,7 +196,7 @@ final class LocalesUtils {
      * @return application's base locale
      */
     static Locale getBaseLocale()    {
-        return LocalesUtils.sLocalesPreferenceManager.getBaseLocale();
+        return LocalesUtils.sLocalesPreferenceManager.getPreferredLocale(LocalesPreferenceManager.BASE_LOCALE);
     }
 
     /**
@@ -245,13 +245,42 @@ final class LocalesUtils {
 
     /**
      *
+     * @return the first launch locale
+     */
+    static Locale getLaunchLocale()  {
+
+        return sLocalesPreferenceManager.getPreferredLocale(LocalesPreferenceManager.LAUNCH_LOCALE);
+    }
+
+    /**
+     * Setting the application locale manually
+     * @param newLocale the desired locale
+     * @param activity the current activity in order to refresh the app
+     *
+     * @return true if the operation succeed, false otherwise
+     */
+    static boolean setLocale(Locale newLocale, Activity activity) {
+        if (newLocale == null || !getLocales().contains(newLocale))  {
+            return false;
+        }
+
+        if (LocalesUtils.setAppLocale(activity.getApplicationContext(), newLocale))   {
+            LocalesUtils.refreshApplication(activity);
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     *
      * @param locale the new preferred locale
      * @return true if the preferred locale updated
      */
     private static boolean updatePreferredLocale(Locale locale)    {
 
         return LocalesUtils.sLocalesPreferenceManager
-                .setPreferredLocale(locale);
+                .setPreferredLocale(LocalesPreferenceManager.USER_PREFERRED_LOCALE, locale);
     }
 
     /**

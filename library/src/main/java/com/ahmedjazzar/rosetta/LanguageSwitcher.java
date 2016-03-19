@@ -5,7 +5,6 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Locale;
 
@@ -53,23 +52,27 @@ public class LanguageSwitcher {
      * @param baseLocale the locale that used in the main xml strings file (most likely 'en')
      */
     public LanguageSwitcher(@NonNull Context context, Locale firstLaunchLocale, Locale baseLocale) {
-        this.mContext = context;
+        this.mContext = context.getApplicationContext();
+
         this.mLocalesPreferences =
                 new LocalesPreferenceManager(context, firstLaunchLocale, baseLocale);
 
         // initializing Locales utils needed objects (detector, preferences)
         LocalesUtils.setDetector(new LocalesDetector(this.mContext));
         LocalesUtils.setLocalesPreferenceManager(mLocalesPreferences);
-        // TODO: why do I need the following line?
-        LocalesUtils.setAppLocale(mContext, mLocalesPreferences.getPreferredLocale());
+
+        // Setting app locale to match the user preferred one
+        LocalesUtils.setAppLocale(mContext,
+                mLocalesPreferences
+                        .getPreferredLocale(LocalesPreferenceManager.USER_PREFERRED_LOCALE));
     }
 
     /**
      * Responsible for displaying Change dialog fragment
      */
-    public void showChangeLanguageDialog()  {
+    public void showChangeLanguageDialog(FragmentActivity activity)  {
         new LanguagesListDialogFragment()
-                .show(((FragmentActivity) mContext).getSupportFragmentManager(), TAG);
+                .show(activity.getSupportFragmentManager(), TAG);
     }
 
     /**
@@ -126,7 +129,7 @@ public class LanguageSwitcher {
      * @param newLocale the locale in a string format
      * @param activity the current activity in order to refresh the app
      *
-     * @return true if the operation succeed else otherwise
+     * @return true if the operation succeed, false otherwise
      */
     public boolean setLocale(String newLocale, Activity activity)   {
         return setLocale(new Locale(newLocale), activity);
@@ -137,19 +140,30 @@ public class LanguageSwitcher {
      * @param newLocale the desired locale
      * @param activity the current activity in order to refresh the app
      *
-     * @return true if the operation succeed else otherwise
+     * @return true if the operation succeed, false otherwise
      */
     public boolean setLocale(Locale newLocale, Activity activity)  {
 
-        if (newLocale == null || !getLocales().contains(newLocale))  {
-            return false;
-        }
+        return LocalesUtils.setLocale(newLocale, activity);
+    }
 
-        if (LocalesUtils.setAppLocale(mContext, newLocale))   {
-            LocalesUtils.refreshApplication(activity);
-            return true;
-        }
+    /**
+     *
+     * @return the first launch locale
+     */
+    public Locale getLaunchLocale()  {
 
-        return false;
+        return LocalesUtils.getLaunchLocale();
+    }
+
+    /**
+     * Return to the first launch locale
+     * @param activity the current activity in order to refresh the app
+     *
+     * @return true if the operation succeed, false otherwise
+     */
+    public boolean switchToLaunch(Activity activity)  {
+
+        return setLocale(getLaunchLocale(), activity);
     }
 }
