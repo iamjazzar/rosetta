@@ -27,14 +27,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Locale arabicLocale = new Locale("ar");
-                if (getResources().getConfiguration().locale.equals(arabicLocale)) {
-                    new LanguageSwitcher(getApplicationContext())
-                            .setLocale(Locale.US, MainActivity.this);
-                } else {
-                    new LanguageSwitcher(getApplicationContext())
-                            .setLocale(arabicLocale, MainActivity.this);
-                }
+                MainApplication.languageSwitcher.switchToLaunch(MainActivity.this);
             }
         });
     }
@@ -55,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            new LanguageSwitcher(this).showChangeLanguageDialog();
+            MainApplication.languageSwitcher.showChangeLanguageDialog(this);
             return true;
         }
 

@@ -14,6 +14,7 @@ public class MainApplication extends Application {
 
     private Locale firstLaunchLocale;
     private HashSet<Locale> supportedLocales;
+    public static LanguageSwitcher languageSwitcher;
 
     @Override
     public void onCreate() {
@@ -25,8 +26,8 @@ public class MainApplication extends Application {
         AutomatedSupportedLocales();
         manualSupportedLocales();
 
-        LanguageSwitcher ls = new LanguageSwitcher(this, firstLaunchLocale);
-        ls.setSupportedLocales(supportedLocales);
+        languageSwitcher = new LanguageSwitcher(this, firstLaunchLocale);
+        languageSwitcher.setSupportedLocales(supportedLocales);
     }
 
     private void AutomatedSupportedLocales() {
@@ -37,11 +38,10 @@ public class MainApplication extends Application {
         // This is the locale that you wanna your app to launch with.
         firstLaunchLocale = new Locale("ar");
 
-        // You can use a HashSet<String> instead and call 'setSupportedStringLocales()'
-        // and it'll work perfectly :)
+        // You can use a HashSet<String> instead and call 'setSupportedStringLocales()' :)
         supportedLocales = new HashSet<>();
         supportedLocales.add(Locale.US);
         supportedLocales.add(Locale.CHINA);
-        supportedLocales.add(new Locale("ar"));
+        supportedLocales.add(firstLaunchLocale);
     }
 }
