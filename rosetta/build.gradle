@@ -54,6 +54,7 @@ android {
         versionCode 2
         versionName "0.9.1"
     }
+
     buildTypes {
         release {
             minifyEnabled false
