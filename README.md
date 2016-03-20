@@ -1,12 +1,13 @@
 # Rosetta [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.ahmedjazzar.rosetta/rosetta/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.ahmedjazzar.rosetta/rosetta/badge.svg)
 
-Rosetta is an Android library that helps your app to support multiple languages and switching between them without causing any headaches for you as a developer.
+Rosetta is an Android library that helps your app to support multiple languages and switching between them without causing any headaches.
 
 ![First screenshot](https://s3-us-west-2.amazonaws.com/ahmedjazzar-ahmedjazzarcom/libs/rosetta-v0.9.png)
 
 ## How to use
 
 #### 1. Add these lines to your *build.gradle*
+You can use *Jcenter()* or *mavenCentral()*
 
 ```JAVA
 repositories {
@@ -14,7 +15,7 @@ repositories {
 }
 
 dependencies {
-  compile "com.ahmedjazzar.rosetta:rosetta:0.9.0"
+  compile "com.ahmedjazzar.rosetta:rosetta:0.9.1"
 }
 ```
 
@@ -31,13 +32,14 @@ You can use this method if you have a closed source app, or your app has a speci
 // This is the locale that you wanna your app to launch with.
 Locale firstLaunchLocale = new Locale("ar");
 
-// You can use a HashSet<String> instead and call 'setSupportedStringLocales()'
-// and it'll work perfectly :)
+// You can use a HashSet<String> instead and call 'setSupportedStringLocales()' :)
 HashSet<Locale> supportedLocales = new HashSet<>();
 supportedLocales.add(Locale.US);
 supportedLocales.add(Locale.CHINA);
-supportedLocales.add(new Locale("ar"));
+supportedLocales.add(firstLaunchLocale);
 
+// You can make the following object static so you can use the same reference in all app's 
+// classes. static is much stable.
 LanguageSwitcher ls = new LanguageSwitcher(this, firstLaunchLocale);
 ls.setSupportedLocales(supportedLocales);
 
@@ -110,6 +112,9 @@ LinearLayout languageView = (LinearLayout) layout.findViewById(R.id.language_lay
 languageView.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View v) {
+    	// If you have a static declared switcher You can call it using the 
+    	// following line:
+    	// MainApplication.languageSwitcher.showChangeLanguageDialog(this);
         new LanguageSwitcher(getActivity()).showChangeLanguageDialog();
     }
 });
@@ -121,7 +126,7 @@ language_tv.setText(currentLocale.getDisplayName(currentLocale));
 ```
 
 #### 5. Cheers!
-Yes! You did it. Your application supports now every locale supported by android.
+Yes! You did it. Your application now supports all Android supported locales.
 
 
 ## Extra features
@@ -129,7 +134,8 @@ Yes! You did it. Your application supports now every locale supported by android
 1. To get a HashSet of the supported locales: `ls.getLocales()`.
 2. To set the supported locales using a `HashSet<String>` instead of `HashSet<Locale>`:
 `ls.setSupportedStringLocales(supportedLocales)`.
-3. To use your own `DialogFragment` with your custom design:
+3. To return to your launch locale (helpful when you have non-localized views): `ls.switchToLaunch(SomeActivity.this)`
+4. To use your own `DialogFragment` with your custom design:
 	1. Extend `LanguagesListDialogFragment` and override `onCreateDialog`! For example:
 	```JAVA
 	public class ChangeLanguageDialogFragment extends LanguagesListDialogFragment	{
@@ -158,7 +164,7 @@ Yes! You did it. Your application supports now every locale supported by android
 
 ## What is Rosetta?
 
-The Rosetta Stone is a granodiorite stele inscribed with a decree issued at Memphis, Egypt, in 196 BC on behalf of King Ptolemy V. The decree appears in three scripts: the upper text is Ancient Egyptian hieroglyphs, the middle portion Demotic script, and the lowest Ancient Greek. Because it presents essentially the same text in all three scripts (with some minor differences among them), the stone provided the key to the modern understanding of Egyptian hieroglyphs.
+Rosetta is the first name of Rosetta Stone. The Rosetta Stone is a granodiorite stele inscribed with a decree issued at Memphis, Egypt, in 196 BC on behalf of King Ptolemy V. The decree appears in three scripts: the upper text is Ancient Egyptian hieroglyphs, the middle portion Demotic script, and the lowest Ancient Greek. Because it presents essentially the same text in all three scripts (with some minor differences among them), the stone provided the key to the modern understanding of Egyptian hieroglyphs.
 * Continue reading [here](https://en.wikipedia.org/wiki/Rosetta_Stone)
 
 ## License
