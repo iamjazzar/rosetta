@@ -1,4 +1,5 @@
-# Rosetta [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.ahmedjazzar.rosetta/rosetta/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.ahmedjazzar.rosetta/rosetta/badge.svg)
+# Rosetta [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.ahmedjazzar.rosetta/rosetta/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.ahmedjazzar.rosetta/rosetta/badge.svg) [![Build Status](https://travis-ci.org/ahmedaljazzar/rosetta.svg?branch=master)](https://travis-ci.org/ahmedaljazzar/rosetta) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/ahmedaljazzar/localizers?utm_source=badge-link&utm_medium=link&utm_campaign=share-link)
+
 
 Rosetta is an Android library that helps your app to support multiple languages and switching between them without causing any headaches.
 
@@ -38,7 +39,7 @@ supportedLocales.add(Locale.US);
 supportedLocales.add(Locale.CHINA);
 supportedLocales.add(firstLaunchLocale);
 
-// You can make the following object static so you can use the same reference in all app's 
+// You can make the following object static so you can use the same reference in all app's
 // classes. static is much stable.
 LanguageSwitcher ls = new LanguageSwitcher(this, firstLaunchLocale);
 ls.setSupportedLocales(supportedLocales);
@@ -112,7 +113,7 @@ LinearLayout languageView = (LinearLayout) layout.findViewById(R.id.language_lay
 languageView.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View v) {
-    	// If you have a static declared switcher You can call it using the 
+    	// If you have a static declared switcher You can call it using the
     	// following line:
     	// MainApplication.languageSwitcher.showChangeLanguageDialog(this);
         new LanguageSwitcher(getActivity()).showChangeLanguageDialog();
