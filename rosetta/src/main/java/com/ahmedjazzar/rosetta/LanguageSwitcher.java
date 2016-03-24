@@ -157,6 +157,15 @@ public class LanguageSwitcher {
     }
 
     /**
+     *
+     * @return the current locale
+     */
+    public Locale getCurrentLocale()  {
+
+        return LocalesUtils.getCurrentLocale(this.mContext);
+    }
+
+    /**
      * Return to the first launch locale
      * @param activity the current activity in order to refresh the app
      *

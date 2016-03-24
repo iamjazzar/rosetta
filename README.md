@@ -2,7 +2,7 @@
 
 Rosetta is an Android library that helps your app to support multiple languages and switching between them without causing any headaches.
 
-![First screenshot](https://s3-us-west-2.amazonaws.com/ahmedjazzar-ahmedjazzarcom/libs/rosetta-v0.9.png)
+![First screenshot](https://s3-us-west-2.amazonaws.com/ahmedjazzar-ahmedjazzarcom/libs/rosetta-v1.0.png)
 
 ## How to use
 
@@ -15,7 +15,7 @@ repositories {
 }
 
 dependencies {
-  compile "com.ahmedjazzar.rosetta:rosetta:0.9.1"
+  compile "com.ahmedjazzar.rosetta:rosetta:1.0"
 }
 ```
 
