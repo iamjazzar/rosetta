@@ -1,4 +1,4 @@
-# Rosetta [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.ahmedjazzar.rosetta/rosetta/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.ahmedjazzar.rosetta/rosetta/badge.svg) [![Build Status](https://travis-ci.org/ahmedaljazzar/rosetta.svg?branch=master)](https://travis-ci.org/ahmedaljazzar/rosetta) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/ahmedaljazzar/localizers?utm_source=badge-link&utm_medium=link&utm_campaign=share-link)
+# Rosetta [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.ahmedjazzar.rosetta/rosetta/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.ahmedjazzar.rosetta/rosetta/badge.svg)  [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/ahmedaljazzar/localizers?utm_source=badge-link&utm_medium=link&utm_campaign=share-link)
 
 
 Rosetta is an Android library that helps your app to support multiple languages and switching between them without causing any headaches.
