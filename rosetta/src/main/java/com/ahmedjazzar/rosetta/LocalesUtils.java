@@ -273,6 +273,18 @@ final class LocalesUtils {
     }
 
     /**
+     * @param context application base context
+     * @return the current locale
+     */
+    public static Locale getCurrentLocale(Context context) {
+        Resources resources = context.getResources();
+        Configuration configuration = resources.getConfiguration();
+        Locale currentLocale = new Locale(configuration.locale.getLanguage(), configuration.locale.getCountry());
+
+        return currentLocale;
+    }
+
+    /**
      *
      * @param locale the new preferred locale
      * @return true if the preferred locale updated
