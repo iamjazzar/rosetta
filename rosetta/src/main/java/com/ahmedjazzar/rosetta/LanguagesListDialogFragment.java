@@ -1,3 +1,4 @@
+
 package com.ahmedjazzar.rosetta;
 
 import android.app.AlertDialog;
@@ -167,6 +168,8 @@ public class LanguagesListDialogFragment extends DialogFragment {
      */
     protected void onNegativeClick() {
         mLogger.verbose("User discarded changing language.");
+        mLogger.debug("Return to the original locale.");
+        this.onLanguageSelectedLocalized(this.getCurrentLocaleIndex());
     }
 
     /**
