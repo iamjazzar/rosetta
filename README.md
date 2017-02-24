@@ -1,4 +1,4 @@
-# Rosetta [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.ahmedjazzar.rosetta/rosetta/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.ahmedjazzar.rosetta/rosetta/badge.svg)  [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/ahmedaljazzar/localizers?utm_source=badge-link&utm_medium=link&utm_campaign=share-link) [![Android Gems](http://www.android-gems.com/badge/ahmedaljazzar/rosetta.svg?branch=master)](http://www.android-gems.com/lib/ahmedaljazzar/rosetta)
+# Rosetta [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.ahmedjazzar.rosetta/rosetta/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.ahmedjazzar.rosetta/rosetta/badge.svg) [![Android Gems](http://www.android-gems.com/badge/ahmedaljazzar/rosetta.svg?branch=master)](http://www.android-gems.com/lib/ahmedaljazzar/rosetta)
 
 
 Rosetta is an Android library that helps your app supporting multiple languages and switching between them without causing any headaches.
@@ -16,7 +16,7 @@ repositories {
 }
 
 dependencies {
-  compile "com.ahmedjazzar.rosetta:rosetta:1.0"
+  compile "com.ahmedjazzar.rosetta:rosetta:1.0.1"
 }
 ```
 
@@ -173,4 +173,4 @@ The MIT License (MIT)
 Copyright (c) 2016 Ahmed Jazzar <me@ahmedjazzar.com>
 
 
-*NOTE: This library does not translate your application localized strings, it's just switching between them.*
+*NOTE: This library does not translate your application localized strings, it's just helping you switching between them.*
