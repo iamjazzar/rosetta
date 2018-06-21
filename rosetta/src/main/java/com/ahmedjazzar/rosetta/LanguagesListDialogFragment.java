@@ -153,7 +153,8 @@ public class LanguagesListDialogFragment extends DialogFragment {
                     getActivity(), mSelectedLanguage)) {
 
                 mLogger.info("App locale changed successfully.");
-                LocalesUtils.refreshApplication(getActivity());
+                //LocalesUtils.refreshApplication(getActivity());
+                ProcessPhoenix.triggerRebirth(getActivity());
             } else {
                 mLogger.error("Unsuccessful trial to change the App locale.");
                 // TODO: notify the user that his request not placed

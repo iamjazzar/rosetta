@@ -265,7 +265,8 @@ final class LocalesUtils {
         }
 
         if (LocalesUtils.setAppLocale(activity.getApplicationContext(), newLocale))   {
-            LocalesUtils.refreshApplication(activity);
+            //LocalesUtils.refreshApplication(activity);
+            ProcessPhoenix.triggerRebirth(activity);
             return true;
         }
 
