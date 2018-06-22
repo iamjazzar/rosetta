@@ -18,10 +18,10 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
 
         // This floating button switching between Arabic and English Locales manually upon click
-        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        final FloatingActionButton fab = findViewById(R.id.fab);
         setSupportActionBar(toolbar);
 
         if (MainApplication.languageSwitcher.getCurrentLocale().getLanguage().equals("ar"))   {
