@@ -10,6 +10,8 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.util.DisplayMetrics;
 
+import com.jakewharton.processphoenix.ProcessPhoenix;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;

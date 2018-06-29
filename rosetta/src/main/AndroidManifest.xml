@@ -1,10 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-package="com.ahmedjazzar.rosetta">
+    package="com.ahmedjazzar.rosetta">
 
-<application android:supportsRtl="true">
-    <activity
-        android:name=".ProcessPhoenix"
-        android:process=":phoenix"
-        android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-</application>
+    <application android:supportsRtl="true"/>
 </manifest>

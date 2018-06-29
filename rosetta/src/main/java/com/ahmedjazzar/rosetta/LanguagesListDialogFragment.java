@@ -11,6 +11,8 @@ import android.support.v4.app.FragmentActivity;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.jakewharton.processphoenix.ProcessPhoenix;
+
 import java.util.ArrayList;
 import java.util.Locale;
 
