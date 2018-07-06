@@ -1,7 +1,7 @@
 # Rosetta [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.ahmedjazzar.rosetta/rosetta/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.ahmedjazzar.rosetta/rosetta/badge.svg) [![Android Gems](http://www.android-gems.com/badge/ahmedaljazzar/rosetta.svg?branch=master)](http://www.android-gems.com/lib/ahmedaljazzar/rosetta)
 
 
-Rosetta is an Android library that helps your app supporting multiple languages and switching between them without causing any headaches.
+Rosetta is an Android library that helps Android apps support multiple languages. Using Rosetta, switching between languages won't cause any headaches!
 
 ![First screenshot](https://s3-us-west-2.amazonaws.com/ahmedjazzar-ahmedjazzarcom/libs/rosetta-v1.0.png)
 
@@ -22,11 +22,10 @@ dependencies {
 
 #### 2. Identify your locales, **or let the library do it for you**!
 
-At your launch activity or **MainApplication.java** -if exists-, the Library offers two ways to identify
+At the launch activity or **MainApplication.java**, the library offers two ways to identify
 and set the supported locales:
 
-* The first one requires you to know what languages your app gonna use. It's more efficient, predictable, and easy to use.
-You can use this method if you have a closed source app, or your app has a specific supported locales:
+* For the first way, you need to know what languages your app is going to use. This method is predictable, easy to use, and more efficient than the second method. You can use it if your app is closed source or has specific supported locales:
 
 ```JAVA
 
@@ -46,7 +45,7 @@ ls.setSupportedLocales(supportedLocales);
 
 ```
 
-* The second one asking the library to do its magic and searches inside the app for available locale. *May fail!* *:
+* The second way is asking the library to do its magic and search inside the app for available locales. *May fail!* *:
 
 ```JAVA
 
@@ -68,15 +67,15 @@ ls.setSupportedLocales(stringId);
 
 ```
 
-* The second methodology is gonna fetch the available locales in your app then set them as the support locales since there's no supported locales provided.
-* You can see what locales gonna be fetched before setting them by calling:
+The second methodology fetches the available locales in your app, then sets them as the support locales (since there are no supported locales provided).
+by executing the following command you will see what locales will be fetched before setting them:
 
 	```JAVA
 	ls.fetchAvailableLocales(stringId);
 	```
 
-	and it's gonna return a **HashSet<Locale>** of the detected locales.
-* * It may fails because even if you have a folder named **values-ar** it doesn't mean you have any resources there, so if you have **values-ar** and you provided the **LanguageSwitcher** with a string that's not listed in, or it has the same characters in the same order; i.e *nice* in US and *nice* in UK, then your locale, unfortunately, will not detected.
+	the return value is a **HashSet<Locale>** of the detected locales.
+* * It may fail because even if you have a folder named **values-ar** it doesn't mean you have any resources there. If you have **values-ar** and you provide the **LanguageSwitcher** with a string that is not listed , or has the same characters in the same order then your locale will not be detected (i.e *nice* in US and *nice* in UK). 
 
 #### 3. Add a tab in your **activity_settings.xml**
 
