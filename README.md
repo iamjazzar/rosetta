@@ -131,12 +131,12 @@ Yes! You did it. Your application now supports all Android supported locales.
 
 ## Extra features
 
-1. To get a HashSet of the supported locales: `ls.getLocales()`.
+1. To get a HashSet of the supported locales: `ls.getLocales()`
 2. To set the supported locales using a `HashSet<String>` instead of `HashSet<Locale>`:
-`ls.setSupportedStringLocales(supportedLocales)`.
+`ls.setSupportedStringLocales(supportedLocales)`
 3. To return to your launch locale (helpful when you have non-localized views): `ls.switchToLaunch(SomeActivity.this)`
 4. To use your own `DialogFragment` with your custom design:
-	1. Extend `LanguagesListDialogFragment` and override `onCreateDialog`! For example:
+	1. Extend `LanguagesListDialogFragment` and override `onCreateDialog`. For example:
 	```JAVA
 	public class ChangeLanguageDialogFragment extends LanguagesListDialogFragment	{
 		.
@@ -156,15 +156,15 @@ Yes! You did it. Your application now supports all Android supported locales.
 		.
 	}
 	```
-	2. In **positive button** on click listener call: `onPositiveClick();`
-	3. In **OnItemClickListener** use `onLanguageSelected(position);`, or if you wanna localize the dialog title, positive button, and negative button texts call `onLanguageSelectedLocalized(position, titleTextView, positiveBtn, negativeBtn);`.
-	4. You can use other helpful methods available in the parent class like:
+	2. In **positive button** OnClickListener call: `onPositiveClick();`
+	3. In **OnItemClickListener** use `onLanguageSelected(position);` or if you want to localize the dialog title, positive button, and negative button texts, call `onLanguageSelectedLocalized(position, titleTextView, positiveBtn, negativeBtn);`
+	4. You can use other methods available in the parent class, such as:
 		1. `getLanguages()` to get a display-ready languages.
 		2. `getCurrentLocaleIndex()` to get the index of the locale that your app is displaying right now.
 
 ## What is Rosetta?
 
-Rosetta is the first name of Rosetta Stone. The Rosetta Stone is a granodiorite stele inscribed with a decree issued at Memphis, Egypt, in 196 BC on behalf of King Ptolemy V. The decree appears in three scripts: the upper text is Ancient Egyptian hieroglyphs, the middle portion Demotic script, and the lowest Ancient Greek. Because it presents essentially the same text in all three scripts (with some minor differences among them), the stone provided the key to the modern understanding of Egyptian hieroglyphs.
+Rosetta is the first name of Rosetta Stone. Rosetta Stone is a granodiorite stele inscribed with a decree issued at Memphis, Egypt, in 196 BC on behalf of King Ptolemy V. The decree appears in three scripts: The upper text is Ancient Egyptian hieroglyphs, the middle portion is Demotic script, and the lowest is Ancient Greek. The stone provided the key to the modern understanding of Egyptian hieroglyphs, because it presents the same text in all three scripts (with some minor differences among them), 
 * Continue reading [here](https://en.wikipedia.org/wiki/Rosetta_Stone)
 
 ## License
@@ -172,4 +172,4 @@ The MIT License (MIT)
 Copyright (c) 2016 Ahmed Jazzar <me@ahmedjazzar.com>
 
 
-*NOTE: This library does not translate your application localized strings, it's just helping you switching between them.*
+*NOTE: This library does not translate your application localized strings, it's just helping you switch between them.*
