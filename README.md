@@ -56,7 +56,7 @@ Locale firstLaunchLocale = new Locale("ar");
 // in English, so if you wrote it in another locale specify it here.
 Locale baseLocale = Locale.ENGLISH;
 
-// stringId: the id of a string that's occurred in every locale with a different characters.
+// stringId: the id of a string that's occurred in every locale with a different character.
 // For instance if you have 3 locales: US, UK, and Arabic the perfect fit would be the word
 // 'color' -if exist for sure- because it has different form in each locale:
 // Locale.US: color, Locale.UK: colour, ar: لون
@@ -75,7 +75,7 @@ by executing the following command you will see what locales will be fetched bef
 	```
 
 	the return value is a **HashSet<Locale>** of the detected locales.
-* * It may fail because even if you have a folder named **values-ar** it doesn't mean you have any resources there. If you have **values-ar** and you provide the **LanguageSwitcher** with a string that is not listed , or has the same characters in the same order then your locale will not be detected (i.e *nice* in US and *nice* in UK). 
+* * It may fail because even if you have a folder named **values-ar** it doesn't mean you have any resources there. If you have **values-ar** and you provide the **LanguageSwitcher** with a string that is not listed, or has the same characters in the same order then your locale will not be detected (i.e *nice* in US and *nice* in the UK). 
 
 #### 3. Add a tab in your **activity_settings.xml**
 
@@ -164,8 +164,7 @@ Yes! You did it. Your application now supports all Android supported locales.
 
 ## What is Rosetta?
 
-Rosetta is the first name of Rosetta Stone. Rosetta Stone is a granodiorite stele inscribed with a decree issued at Memphis, Egypt, in 196 BC on behalf of King Ptolemy V. The decree appears in three scripts: The upper text is Ancient Egyptian hieroglyphs, the middle portion is Demotic script, and the lowest is Ancient Greek. The stone provided the key to the modern understanding of Egyptian hieroglyphs, because it presents the same text in all three scripts (with some minor differences among them), 
-* Continue reading [here](https://en.wikipedia.org/wiki/Rosetta_Stone)
+Rosetta is the first name of Rosetta Stone. Rosetta Stone is a granodiorite stele inscribed with a decree issued at Memphis, Egypt, in 196 BC on behalf of King Ptolemy V. The decree appears in three scripts: The upper text is Ancient Egyptian hieroglyphs, the middle portion is a Demotic script, and the lowest is Ancient Greek. The stone provided the key to the modern understanding of Egyptian hieroglyphs because it presented the same text in all three scripts (with some minor differences among them). Continue reading [here](https://en.wikipedia.org/wiki/Rosetta_Stone).
 
 ## License
 The MIT License (MIT)
