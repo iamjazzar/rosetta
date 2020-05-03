@@ -4,12 +4,15 @@ package com.ahmedjazzar.rosetta;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentActivity;
+
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentActivity;
+
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.jakewharton.processphoenix.ProcessPhoenix;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -17,7 +20,7 @@ import java.util.Locale;
 /**
  * This fragment is responsible for displaying the supported locales and performing any necessary
  * action that allows user to select, cancel, and commit changes.
- *
+ * <p>
  * Created by ahmedjazzar on 1/19/16.
  */
 
@@ -31,12 +34,11 @@ public class LanguagesListDialogFragment extends DialogFragment {
     private int mSelectedLanguage = -1;
     private Logger mLogger;
 
-    public LanguagesListDialogFragment()  {
+    public LanguagesListDialogFragment() {
         this.mLogger = new Logger(TAG);
     }
 
     /**
-     *
      * @param savedInstanceState
      * @return a Dialog fragment
      */
@@ -75,19 +77,19 @@ public class LanguagesListDialogFragment extends DialogFragment {
     }
 
     /**
-     *
      * @param which the position of the selected locale
      */
-    protected void onLanguageSelected(int which)  {
+    protected void onLanguageSelected(int which) {
         // just update the selected locale
         mSelectedLanguage = which;
     }
 
     /**
      * Localizing the dialog buttons and title
+     *
      * @param which the position of the selected locale
      */
-    protected void onLanguageSelectedLocalized(int which)  {
+    protected void onLanguageSelectedLocalized(int which) {
 
         // update the selected locale
         mSelectedLanguage = which;
@@ -105,13 +107,14 @@ public class LanguagesListDialogFragment extends DialogFragment {
 
     /**
      * the position of the selected locale given the ids
-     * @param which the position of the selected locale
-     * @param titleView dialog's title text view
+     *
+     * @param which          the position of the selected locale
+     * @param titleView      dialog's title text view
      * @param positiveButton positive button
      * @param negativeButton negative button
      */
     protected void onLanguageSelectedLocalized(int which, TextView titleView, Button positiveButton,
-                                               Button negativeButton)  {
+                                               Button negativeButton) {
 
         // update the selected locale
         mSelectedLanguage = which;
@@ -123,10 +126,10 @@ public class LanguagesListDialogFragment extends DialogFragment {
                 "locale");
 
         String LocalizedTitle = LocalesUtils.getInSpecificLocale(activity, locale, DIALOG_TITLE_ID);
-        if(titleView == null)   {
+        if (titleView == null) {
             // Display dialog title in the selected locale
             dialog.setTitle(LocalizedTitle);
-        } else  {
+        } else {
             titleView.setText(LocalizedTitle);
         }
 
@@ -153,12 +156,13 @@ public class LanguagesListDialogFragment extends DialogFragment {
                     getActivity(), mSelectedLanguage)) {
 
                 mLogger.info("App locale changed successfully.");
-                LocalesUtils.refreshApplication(getActivity());
+                //LocalesUtils.refreshApplication(getActivity());
+                ProcessPhoenix.triggerRebirth(getActivity());
             } else {
                 mLogger.error("Unsuccessful trial to change the App locale.");
                 // TODO: notify the user that his request not placed
             }
-        } else  {
+        } else {
             dismiss();
         }
     }
@@ -173,19 +177,17 @@ public class LanguagesListDialogFragment extends DialogFragment {
     }
 
     /**
-     *
      * @return available languages
      */
     protected String[] getLanguages() {
-        ArrayList<String> languages =  LocalesUtils.getLocalesWithDisplayName();
+        ArrayList<String> languages = LocalesUtils.getLocalesWithDisplayName();
         return languages.toArray(new String[languages.size()]);
     }
 
     /**
-     *
      * @return the index of the locale that app is using now
      */
-    protected int getCurrentLocaleIndex()   {
+    protected int getCurrentLocaleIndex() {
         return LocalesUtils.getCurrentLocaleIndex();
     }
 

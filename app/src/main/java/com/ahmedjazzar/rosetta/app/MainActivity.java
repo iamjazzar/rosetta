@@ -1,27 +1,23 @@
 package com.ahmedjazzar.rosetta.app;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.ahmedjazzar.rosetta.LanguageSwitcher;
-
-import java.util.Locale;
-
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
 
         // This floating button switching between Arabic and English Locales manually upon click
-        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        final FloatingActionButton fab = findViewById(R.id.fab);
         setSupportActionBar(toolbar);
 
         if (MainApplication.languageSwitcher.getCurrentLocale().getLanguage().equals("ar"))   {

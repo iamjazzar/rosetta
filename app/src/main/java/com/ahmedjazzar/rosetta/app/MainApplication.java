@@ -1,7 +1,11 @@
 package com.ahmedjazzar.rosetta.app;
 
 import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
+import com.ahmedjazzar.rosetta.ContextWrapper;
 import com.ahmedjazzar.rosetta.LanguageSwitcher;
 
 import java.util.HashSet;
